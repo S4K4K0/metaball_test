@@ -20,7 +20,7 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    ofxMetaball2d circleLeft;
-    ofxMetaball2d circleRight;
+    ofxMetaball2d movingCircle;
+    vector<ofxMetaball2d> fixedCircles;
     bool oneShot;
 };

@@ -6,22 +6,27 @@ void ofApp::setup(){
     ofSetCircleResolution(64);
     oneShot = false;
     
-    circleLeft.setCenter(ofPoint(ofGetWidth() / 2, ofGetHeight() / 2));
-    circleLeft.setRadius(130);
-    circleLeft.setTarget(&circleRight);
-    circleLeft.update();
+    movingCircle.setCenter(ofPoint(mouseX, mouseY));
+    movingCircle.setRadius(16);
+    movingCircle.update();
     
-    circleRight.setCenter(ofPoint(512, 384));
-    circleRight.setRadius(150);
-    circleRight.update();
+    static const int num = 256;
+    
+    for (int i = 0; i < num; i++) {
+        fixedCircles.push_back(ofxMetaball2d(ofPoint(ofRandom(ofGetWidth()),ofRandom(ofGetHeight())), ofRandom(2, 16), &movingCircle));
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    circleRight.update();
-    circleLeft.update();
+    movingCircle.center = ofPoint(mouseX, mouseY);
+    movingCircle.update();
+
+    for (int i = 0; i < fixedCircles.size(); i++) {
+        fixedCircles[i].update();
+    }
     
-    circleLeft.center = ofPoint(mouseX, mouseY);
+    
 }
 
 //--------------------------------------------------------------
@@ -29,11 +34,13 @@ void ofApp::draw(){
     if( oneShot ){
         ofBeginSaveScreenAsPDF("screenshot-"+ofGetTimestampString()+".pdf", false);
     }
-    
-    
-    
-    circleLeft.draw();
-    circleRight.draw();
+
+    movingCircle.draw();
+    for (int i = 0; i < fixedCircles.size(); i++) {
+        fixedCircles[i].draw();
+    }
+
+    ofDrawBitmapStringHighlight("framerate: " + ofToString(ofGetFrameRate()), ofPoint(10,10));
     
     if (oneShot) {
         ofEndSaveScreenAsPDF();
