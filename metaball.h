@@ -37,7 +37,6 @@ private:
     float avrRadius; // average radius of 2 circles
     ofPath shape;
     
-    void metaball();
     ofPoint setPnt(ofPoint _center, float _angle, float _dist);
     float equation2_min(float a, float b, float c);
     float getHandleLengthBase(float theta);
